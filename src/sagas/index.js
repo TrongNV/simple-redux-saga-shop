@@ -1,13 +1,45 @@
 /* eslint-disable no-constant-condition */
 
-import { put, call, takeEvery } from 'redux-saga/effects'
-import { delay } from 'redux-saga'
+import {put, call, takeEvery, all, fork, take} from 'redux-saga/effects'
+import {delay} from 'redux-saga'
 
-export function* incrementAsync() {
-  yield call(delay, 1000)
-  yield put({type: 'INCREMENT'})
+const api = {
+    getAllProducts() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve([
+                    {id: 1, name: "Product1", image: ""},
+                    {id: 2, name: "Product2", image: ""},
+                    {id: 3, name: "Product3", image: ""},
+                ])
+            }, 1500)
+        });
+    }
+};
+
+export function* getAllProducts() {
+    const products = yield call(api.getAllProducts);
+    yield put({type: 'SET_PRODUCTS', products});
+}
+
+export function* watchProductAddedToCart() {
+    while(true) {
+        const {product} = yield take('ADD_PRODUCT_TO_CART');
+        yield put({type: 'REMOVE_PRODUCT', product})
+    }
+}
+
+export function* watchProductRemovedFromCart() {
+    while(true) {
+        const {product} = yield take('REMOVE_PRODUCT_FROM_CART');
+        yield put({type: 'ADD_PRODUCT', product})
+    }
 }
 
 export default function* rootSaga() {
-  yield takeEvery('INCREMENT_ASYNC', incrementAsync)
+    yield all([
+        fork(getAllProducts),
+        fork(watchProductAddedToCart),
+        fork(watchProductRemovedFromCart),
+    ])
 }

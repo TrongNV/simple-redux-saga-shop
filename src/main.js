@@ -3,33 +3,39 @@ import "babel-polyfill"
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware } from 'redux'
+import {createStore, applyMiddleware, combineReducers} from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
-import Counter from './components/Counter'
-import reducer from './reducers'
+import shop from './reducers/shop'
+import cart from "./reducers/cart";
 import rootSaga from './sagas'
+import {MuiThemeProvider} from "material-ui";
+import {Provider} from "react-redux";
+import App from "./App";
 
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
-  reducer,
-  applyMiddleware(sagaMiddleware)
+    combineReducers({
+        shop,
+        cart
+    }),
+    applyMiddleware(sagaMiddleware)
 )
 sagaMiddleware.run(rootSaga)
 
 const action = type => store.dispatch({type})
 
 function render() {
-  ReactDOM.render(
-    <Counter
-      value={store.getState()}
-      onIncrement={() => action('INCREMENT')}
-      onDecrement={() => action('DECREMENT')}
-      onIncrementIfOdd={() => action('INCREMENT_IF_ODD')}
-      onIncrementAsync={() => action('INCREMENT_ASYNC')} />,
-    document.getElementById('root')
-  )
+    ReactDOM.render(
+        <Provider store={store}>
+            <MuiThemeProvider>
+                <App/>
+            </MuiThemeProvider>
+        </Provider>
+        ,
+        document.getElementById('root')
+    )
 }
 
 render()
