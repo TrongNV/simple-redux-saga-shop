@@ -13,7 +13,6 @@ import {MuiThemeProvider} from "material-ui";
 import {Provider} from "react-redux";
 import App from "./App";
 
-
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
     combineReducers({

@@ -1,9 +1,9 @@
 import {connect} from "react-redux";
-import ProductList from "./components/ProductList";
 import React, {Component} from "react";
-import {AppBar} from "material-ui";
-import {Grid, Row, Col} from "react-bootstrap";
+import {AppBar, FlatButton, FontIcon, IconButton, RaisedButton} from "material-ui";
 import * as _ from 'lodash';
+import {BrowserRouter as Router, Route, Link, NavLink} from "react-router-dom";
+import ProductListPage from "./components/ProductListPage";
 
 class App extends Component {
     constructor(props) {
@@ -12,32 +12,17 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                <AppBar title={"Simple React Redux Saga Shop"}/>
-                <div className="container">
-                    <Grid>
-                        <Row>
-                            <Col md={6}>
-                                <h1>Product list</h1>
-                                <ProductList
-                                    products={this.props.products}
-                                    addProductToCart={this.props.addProductToCart}
-                                />
-                            </Col>
-                            <Col md={6}>
-                                <h1>Cart</h1>
-                                <ProductList
-                                    products={this.props.cart.products}
-                                    removeProductFromCart={this.props.removeProductFromCart}
-                                />
-                            </Col>
-                        </Row>
-                    </Grid>
+            <Router>
+                <div>
+                    <AppBar title={"Simple React Redux Saga Shop"} iconElementRight={<IconButton iconClassName="material-icons">shopping_cart</IconButton>}/>
+                    <div className="container-fluid">
+                        <Route path="/" exact component={ProductListPage} />
+                    </div>
                 </div>
-            </div>
+            </Router>
         )
     }
-};
+}
 
 function mapStateToProps(state) {
     return {
