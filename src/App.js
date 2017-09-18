@@ -2,8 +2,13 @@ import {connect} from "react-redux";
 import React, {Component} from "react";
 import {AppBar, FlatButton, FontIcon, IconButton, RaisedButton} from "material-ui";
 import * as _ from 'lodash';
-import {BrowserRouter as Router, Route, Link, NavLink} from "react-router-dom";
+import {Route, BrowserRouter as Router} from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory'
+
+const history = createHistory();
 import ProductListPage from "./components/ProductListPage";
+import ProductDetail from "./components/ProductDetail";
+
 
 class App extends Component {
     constructor(props) {
@@ -15,13 +20,15 @@ class App extends Component {
         return (
             <Router>
                 <div>
-                    <AppBar title={"Simple React Redux Saga Shop"} iconElementRight={<IconButton iconClassName="material-icons">shopping_cart</IconButton>}/>
-                    <div className="container-fluid">
+                    <AppBar title={"Simple React Redux Saga Shop"}
+                            iconElementRight={<IconButton iconClassName="material-icons">shopping_cart</IconButton>}/>
+                    <div className="container">
                         <Route path="/" exact component={() => {
                             return (
                                 <ProductListPage products={products}/>
                             )
-                        }} />
+                        }}/>
+                        <Route path="/products/:id" component={ProductDetail}/>
                     </div>
                 </div>
             </Router>

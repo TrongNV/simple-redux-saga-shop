@@ -1,5 +1,11 @@
 const defaultState = {
-    products: []
+    products: [],
+    selectedProduct: {
+        image: null,
+        description: null,
+        title: null,
+        price: null
+    }
 };
 
 export default function shop(state = defaultState, action) {
@@ -12,12 +18,18 @@ export default function shop(state = defaultState, action) {
                     ...state.products.filter(product => product.id !== action.product.id)
                 ]
             })
-            return state;
         case 'ADD_PRODUCT':
             return Object.assign({}, state, {
                 products: [...state.products, action.product]
             })
-            return state;
+        case 'SET_VIEW_PRODUCT_ID':
+            return Object.assign({}, state, {
+                productId: action.productId
+            })
+        case 'SET_SELECTED_PRODUCT':
+            return Object.assign({}, state, {
+                selectedProduct: action.selectedProduct
+            })
         default:
             return state
     }

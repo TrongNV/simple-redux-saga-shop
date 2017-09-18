@@ -4,13 +4,13 @@ import ProductItem from "./ProductItem";
 
 const ProductListPage = ({products = []}) => {
     return (
-       <div className="row">
-           {products.map((product) => {
+        <div className="row">
+            {products.map((product) => {
                 return (
                     <ProductItem key={product.id} product={product}/>
                 )
-           })}
-       </div>
+            })}
+        </div>
     );
 };
 

@@ -14,15 +14,18 @@
   "author": "Theuy Limpanont",
   "license": "ISC",
   "dependencies": {
+    "history": "^4.7.2",
     "lodash": "^4.17.4",
     "material-ui": "^0.19.1",
     "react": "^15.0.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^15.0.0",
     "react-redux": "^4.4.5",
+    "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.5.1",
-    "redux-saga": "^0.15.6"
+    "redux-saga": "^0.15.6",
+    "redux-saga-router": "^2.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.1.18",
