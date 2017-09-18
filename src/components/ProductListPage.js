@@ -1,9 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ProductItem from "./ProductItem";
 
-const ProductListPage = (props) => {
+const ProductListPage = ({products = []}) => {
     return (
-        <div>ProductListPage</div>
+       <div className="row">
+           {products.map((product) => {
+                return (
+                    <ProductItem key={product.id} product={product}/>
+                )
+           })}
+       </div>
     );
 };
 

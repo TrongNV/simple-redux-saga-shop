@@ -11,12 +11,17 @@ class App extends Component {
     }
 
     render() {
+        const {products} = this.props;
         return (
             <Router>
                 <div>
                     <AppBar title={"Simple React Redux Saga Shop"} iconElementRight={<IconButton iconClassName="material-icons">shopping_cart</IconButton>}/>
                     <div className="container-fluid">
-                        <Route path="/" exact component={ProductListPage} />
+                        <Route path="/" exact component={() => {
+                            return (
+                                <ProductListPage products={products}/>
+                            )
+                        }} />
                     </div>
                 </div>
             </Router>
