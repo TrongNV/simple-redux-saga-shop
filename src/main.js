@@ -3,7 +3,7 @@ import "babel-polyfill"
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {createStore, applyMiddleware, combineReducers} from 'redux'
+import {createStore, applyMiddleware, combineReducers, compose} from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
 import shop from './reducers/shop'
@@ -13,13 +13,16 @@ import {MuiThemeProvider} from "material-ui";
 import {Provider} from "react-redux";
 import App from "./App";
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
     combineReducers({
         shop,
         cart
     }),
-    applyMiddleware(sagaMiddleware)
+    composeEnhancers(
+        applyMiddleware(sagaMiddleware)
+    )
 )
 sagaMiddleware.run(rootSaga)
 

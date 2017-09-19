@@ -8,6 +8,7 @@ import createHistory from 'history/createBrowserHistory'
 const history = createHistory();
 import ProductListPage from "./components/ProductListPage";
 import ProductDetail from "./components/ProductDetail";
+import Cart from "./components/Cart";
 
 
 class App extends Component {
@@ -16,16 +17,16 @@ class App extends Component {
     }
 
     render() {
-        const {products} = this.props;
+        const {products, cart} = this.props;
         return (
             <Router>
                 <div>
                     <AppBar title={"Simple React Redux Saga Shop"}
-                            iconElementRight={<IconButton iconClassName="material-icons">shopping_cart</IconButton>}/>
+                            iconElementRight={<Cart />}/>
                     <div className="container">
                         <Route path="/" exact component={() => {
                             return (
-                                <ProductListPage products={products}/>
+                                <ProductListPage />
                             )
                         }}/>
                         <Route path="/products/:id" component={ProductDetail}/>
@@ -36,27 +37,4 @@ class App extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        products: _.sortBy(state.shop.products, ['id']),
-        cart: {
-            products: _.sortBy(state.cart.products, ['id'])
-        }
-    }
-}
-
-function mapActionsToProps(dispatch) {
-    return {
-        addProductToCart(product) {
-            dispatch({type: 'ADD_PRODUCT_TO_CART', product})
-        },
-        removeProductFromCart(product) {
-            dispatch({type: 'REMOVE_PRODUCT_FROM_CART', product})
-        }
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapActionsToProps
-)(App);
+export default App;

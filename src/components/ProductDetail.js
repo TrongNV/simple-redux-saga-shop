@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import {Component} from 'react';
+import {bindActionCreators} from "redux";
 
 class ProductDetail extends Component {
     constructor(props) {
@@ -14,8 +15,14 @@ class ProductDetail extends Component {
         this.props.dispatch({type: 'SET_VIEW_PRODUCT_ID', productId})
     }
 
+    addToCart() {
+        const product = this.props.selectedProduct;
+        this.props.dispatch({type: 'ADD_PRODUCT_TO_CART', product});
+    }
+
     render() {
-        const {selectedProduct: {image, price, title, description}} = this.props;
+        const {image, price, title, description} = this.props.selectedProduct;
+        const {dispatch, selectedProduct} = this.props;
         return (
             <div>
                 <div className="row">
@@ -30,7 +37,9 @@ class ProductDetail extends Component {
                         <h4>{price}</h4>
                         <div className="row">
                             <div className="col-md-12">
-                                <Button className="btn btn-block">Add to cart</Button>
+                                <Button bsStyle="default" className="btn-block"
+                                        onClick={this.addToCart.bind(this)}>Add to
+                                    cart</Button>
                             </div>
                         </div>
                     </div>
@@ -50,5 +59,5 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(
-    mapStateToProps,
+    mapStateToProps
 )(ProductDetail)
