@@ -4,10 +4,10 @@ import {FlatButton, IconButton} from "material-ui";
 import {connect} from "react-redux";
 import * as _ from "lodash";
 
-const Cart = ({cart}) => {
+const CartCounter = ({cart, openCartListDrawer}) => {
     return (
         <div>
-            <FlatButton>
+            <FlatButton onClick={openCartListDrawer}>
                 <h4>
                     <i className="glyphicon glyphicon-shopping-cart">&nbsp;</i>
                     <span className="badge">{cart.products.length}</span>
@@ -17,11 +17,10 @@ const Cart = ({cart}) => {
     );
 };
 
-Cart.propTypes = {};
-Cart.defaultProps = {};
+CartCounter.propTypes = {};
+CartCounter.defaultProps = {};
 
 function mapStateToProps(state) {
-    console.log(state.cart);
     return {
         products: _.sortBy(state.shop.products, ['id']),
         cart: {
@@ -30,6 +29,15 @@ function mapStateToProps(state) {
     }
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+        openCartListDrawer() {
+            return dispatch({type: 'OPEN_CART_LIST_DRAWER'});
+        }
+    }
+}
+
 export default connect(
-    mapStateToProps
-)(Cart);
+    mapStateToProps,
+    mapDispatchToProps
+)(CartCounter);

@@ -1,4 +1,3 @@
-
 const defaultState = {
     products: [],
 };
@@ -14,6 +13,16 @@ export default function shop(state = defaultState, action) {
             return {
                 ...state,
                 products: [...state.products.filter(product => product.id !== action.product.id)]
+            }
+        case 'OPEN_CART_LIST_DRAWER':
+            return {
+                ...state,
+                cartListDrawerOpened: true
+            }
+        case 'CLOSE_CART_LIST_DRAWER':
+            return {
+                ...state,
+                cartListDrawerOpened: false
             }
         default:
             return state

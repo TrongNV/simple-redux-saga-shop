@@ -8,7 +8,8 @@ import createHistory from 'history/createBrowserHistory'
 const history = createHistory();
 import ProductListPage from "./components/ProductListPage";
 import ProductDetail from "./components/ProductDetail";
-import Cart from "./components/Cart";
+import CartCounter from "./components/CartCounter";
+import CartListDrawer from "./components/CartListDrawer";
 
 
 class App extends Component {
@@ -17,18 +18,13 @@ class App extends Component {
     }
 
     render() {
-        const {products, cart} = this.props;
         return (
             <Router>
                 <div>
-                    <AppBar title={"Simple React Redux Saga Shop"}
-                            iconElementRight={<Cart />}/>
+                    <AppBar title={"Simple React Redux Saga Shop"} iconElementRight={<CartCounter/>}/>
+                    <CartListDrawer/>
                     <div className="container">
-                        <Route path="/" exact component={() => {
-                            return (
-                                <ProductListPage />
-                            )
-                        }}/>
+                        <Route path="/" exact component={ProductListPage}/>
                         <Route path="/products/:id" component={ProductDetail}/>
                     </div>
                 </div>
