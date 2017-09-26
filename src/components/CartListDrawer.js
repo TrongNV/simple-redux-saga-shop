@@ -1,8 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {AppBar, Avatar, Divider, Drawer, IconButton, List, ListItem, MenuItem, Subheader} from "material-ui";
+import {
+    AppBar, Avatar, Divider, Drawer, FlatButton, IconButton, List, ListItem, MenuItem, RaisedButton,
+    Subheader
+} from "material-ui";
 import {connect} from "react-redux";
 import {uniqueId} from "lodash";
+import {Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
+
+const CheckoutButton = ({products, closeCartListDrawer}) => {
+    if(products.length) {
+        return (
+            <div style={{position: 'absolute', bottom: "20px", width: "100%"}}>
+                <Divider/>
+                <br/>
+                <Link to="/cart-detail" onClick={closeCartListDrawer}>
+                    <RaisedButton  fullWidth={true} label="Checkout" />
+                </Link>
+            </div>
+
+        )
+    } else {
+        return (
+            <p>Shopping cart is empty</p>
+        )
+    }
+}
 
 const CartListDrawer = ({products, open = false, closeCartListDrawer}) => {
     return (
@@ -34,12 +58,13 @@ const CartListDrawer = ({products, open = false, closeCartListDrawer}) => {
                                     secondaryTextLines={2}
                                 >
                                 </ListItem>
-
                                 <Divider inset={true}/>
                             </div>
                         )
                     })}
+                    <CheckoutButton products={products} closeCartListDrawer={closeCartListDrawer} />
                 </List>
+
             </Drawer>
         </div>
     );

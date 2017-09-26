@@ -10,6 +10,8 @@ import ProductListPage from "./components/ProductListPage";
 import ProductDetail from "./components/ProductDetail";
 import CartCounter from "./components/CartCounter";
 import CartListDrawer from "./components/CartListDrawer";
+import CartDetail from "./components/CartDetail";
+import DeliveryOverview from "./components/DeliveryOverview";
 
 
 class App extends Component {
@@ -26,6 +28,8 @@ class App extends Component {
                     <div className="container">
                         <Route path="/" exact component={ProductListPage}/>
                         <Route path="/products/:id" component={ProductDetail}/>
+                        <Route path="/cart-detail" component={CartDetail}/>
+                        <Route path="/checkout" component={DeliveryOverview}/>
                     </div>
                 </div>
             </Router>
