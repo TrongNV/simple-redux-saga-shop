@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AddressAutoComplete from "./AddressAutoComplete";
-import {Field, formValueSelector, reduxForm, change} from "redux-form";
+import {Field, formValueSelector, reduxForm, change, stopAsyncValidation, reset} from "redux-form";
 import {connect} from "react-redux";
 import {RaisedButton} from "material-ui";
 import Api from '../api';
+import {take, select, takeEvery} from "redux-saga/effects";
+import {store as reduxStore} from '../main';
 
 function DeliveryAddressForm({handleSubmit}) {
     return (
@@ -22,22 +24,18 @@ DeliveryAddressForm.defaultProps = {};
 
 DeliveryAddressForm = reduxForm({
     form: 'deliveryAddress',
+
     asyncValidate: (values, dispatch, props, field) => {
         if (field === 'zipcode') {
             return Api.getAddressByZipCode(values.zipcode)
                 .catch((error) => {
-                    throw {zipcode: 'Fill in correct zipcode'}
+                    throw {zipcode: 'Incorrect zipcode'}
                 })
-        } else if(values.zipcode && field === 'housenumber') {
-            return Api.getAddressByZipCodeAndNumber(values.zipcode, values.housenumber)
-                .then((response) => {
-                    const {data} = response;
-                    let currentAddress = data._embedded.addresses[0];
-                    props.fillStreetName(currentAddress.street);
-                    props.fillInCityName(currentAddress.city.label);
-                })
+        }
+        else if (values.zipcode && field === 'housenumber') {
+            return Api.getAddressByZipCodeAndNumber({zipcode: values.zipcode, number: values.housenumber})
                 .catch((error) => {
-                    throw {housenumber: 'Housnumber unknown for the zipcode'}
+                    throw {housenumber: 'Housenumber unknown for the zipcode'}
                 })
         }
         return Promise.resolve();
@@ -49,7 +47,6 @@ const selector = formValueSelector('deliveryAddress') // <-- same as form name
 
 function mapStateToProps(state) {
     return {
-        zipcode: selector(state, 'zipcode')
     }
 }
 

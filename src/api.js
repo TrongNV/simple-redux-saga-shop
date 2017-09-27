@@ -25,10 +25,9 @@ import find from 'lodash/find';
 import axios from 'axios';
 
 const nlAddressApi = axios.create({
-    baseURL: `https://api.postcodeapi.nu/v2`,
+    baseURL: `https://overheid.io/api`,
     headers: {
-        'X-Api-Key': 'FBuMpkwGsk2aPyb6PXtcC68Ytor87yxi4ddLTPWd',
-        'Accept': 'application/hal+json'
+        'ovio-api-key': '167d8d26168613374c0616df4cb1750abcf08cf2d766125c2a3faba2dc7de980'
     }
 });
 
@@ -49,18 +48,38 @@ export default {
         });
     },
     getAddressByZipCode(zipcode) {
-        return nlAddressApi.get('addresses', {
-            params: {
-                postcode: zipcode
-            }
+        return new Promise( (resolve, reject) => {
+            nlAddressApi.get('bag', {
+                params: {
+                    'filters[postcode]': zipcode
+                }
+            })
+                .then((response) => {
+                    const data = response.data;
+                    const totalItemCount = data.totalItemCount;
+                    if(totalItemCount > 0) {
+                        return resolve(response);
+                    } else {
+                        return reject();
+                    }
+                })
         })
     },
-    getAddressByZipCodeAndNumber(zipcode, number) {
-        return nlAddressApi.get('addresses', {
-            params: {
-                postcode: zipcode,
-                number: number
-            }
+    getAddressByZipCodeAndNumber({zipcode, number}) {
+        return new Promise((resolve, reject) => {
+            nlAddressApi.get('bag', {
+                params: {
+                    'filters[postcode]': zipcode,
+                    'filters[huisnummer]': number
+                }
+            }).then((response) => {
+                const totalItemCount = parseInt(response.data['totalItemCount'] || 0);
+                if(totalItemCount > 0) {
+                    return  resolve(response);
+                } else {
+                    return reject();
+                }
+            })
         })
     }
 }

@@ -2,8 +2,8 @@
 
 import {put, call, takeEvery, all, fork, take, select, spawn} from 'redux-saga/effects'
 import {delay} from 'redux-saga'
+import {change, actionTypes as formActionTypes, SubmissionError} from 'redux-form'
 import Api from '../api';
-
 
 export function* getAllProducts() {
     const products = yield call(Api.getAllProducts);
@@ -30,9 +30,39 @@ export function* watchViewProductDetail() {
     }
 }
 
+function* watchZipCodeInput() {
+    while (true) {
+        const {meta} = yield take(formActionTypes.BLUR);
+        const {zipcode, housenumber} = yield select((state) => state.form.deliveryAddress.values);
+
+        if (meta.field === 'zipcode') {
+            try {
+                const {data} = yield call(Api.getAddressByZipCode, zipcode);
+                let currentAddress = data._embedded.adres[0];
+                yield put(change('deliveryAddress', 'city', currentAddress.woonplaatsnaam))
+            } catch (e) {
+
+            }
+        }
+
+        if (meta.field === 'housenumber') {
+            try {
+                const {data} = yield call(Api.getAddressByZipCodeAndNumber,
+                    {zipcode: zipcode, number: housenumber}
+                );
+                let currentAddress = data._embedded.adres[0];
+                yield put(change('deliveryAddress', 'street', currentAddress.openbareruimtenaam))
+            } catch (e) {
+
+            }
+        }
+    }
+}
+
 export default function* rootSaga() {
     yield fork(getAllProducts);
     yield fork(watchProductAddedToCart);
     yield fork(watchProductRemovedFromCart);
     yield fork(watchViewProductDetail);
+    yield fork(watchZipCodeInput);
 }
