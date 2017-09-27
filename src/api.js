@@ -22,6 +22,15 @@ const products = [
     },
 ];
 import find from 'lodash/find';
+import axios from 'axios';
+
+const nlAddressApi = axios.create({
+    baseURL: `https://api.postcodeapi.nu/v2`,
+    headers: {
+        'X-Api-Key': 'FBuMpkwGsk2aPyb6PXtcC68Ytor87yxi4ddLTPWd',
+        'Accept': 'application/hal+json'
+    }
+});
 
 export default {
     getAllProducts() {
@@ -38,5 +47,20 @@ export default {
                 resolve(product);
             }, 0)
         });
+    },
+    getAddressByZipCode(zipcode) {
+        return nlAddressApi.get('addresses', {
+            params: {
+                postcode: zipcode
+            }
+        })
+    },
+    getAddressByZipCodeAndNumber(zipcode, number) {
+        return nlAddressApi.get('addresses', {
+            params: {
+                postcode: zipcode,
+                number: number
+            }
+        })
     }
 }

@@ -12,13 +12,15 @@ import rootSaga from './sagas'
 import {MuiThemeProvider} from "material-ui";
 import {Provider} from "react-redux";
 import App from "./App";
+import { reducer as reduxFormReducer } from 'redux-form'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
     combineReducers({
         shop,
-        cart
+        cart,
+        form: reduxFormReducer     // <---- Mounted at 'form'
     }),
     composeEnhancers(
         applyMiddleware(sagaMiddleware)
