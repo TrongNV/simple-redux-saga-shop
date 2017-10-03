@@ -16,7 +16,7 @@ const CheckoutButton = ({products, closeCartListDrawer}) => {
                 <Divider/>
                 <br/>
                 <Link to="/cart-detail" onClick={closeCartListDrawer}>
-                    <RaisedButton  fullWidth={true} label="Checkout" />
+                    <RaisedButton  fullWidth={true} label="Checkout" secondary={true} />
                 </Link>
             </div>
 

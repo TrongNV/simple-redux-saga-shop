@@ -1,30 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AddressAutoComplete from "./AddressAutoComplete";
-import {Field, formValueSelector, reduxForm, change, stopAsyncValidation, reset} from "redux-form";
+import {formValueSelector, reduxForm} from "redux-form";
 import {connect} from "react-redux";
 import {RaisedButton} from "material-ui";
 import Api from '../api';
-import {take, select, takeEvery} from "redux-saga/effects";
-import {store as reduxStore} from '../main';
 
-function DeliveryAddressForm({handleSubmit}) {
+function DeliveryAddressForm({lat, lng, mapSrc}) {
     return (
-        <form onSubmit={handleSubmit((values) => {
-            debugger
-        })}>
+        <div>
             <AddressAutoComplete component="input"/>
-            <RaisedButton type="submit" label="Submit"/>
-        </form>
+        </div>
     );
 }
 
 DeliveryAddressForm.propTypes = {};
 DeliveryAddressForm.defaultProps = {};
 
+DeliveryAddressForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DeliveryAddressForm);
+
+const selector = formValueSelector('deliveryAddress') // <-- same as form name
+
+function mapStateToProps(state) {
+    return {
+        lat: selector(state, 'lat') | null,
+        lng: selector(state, 'lng') | null,
+        mapSrc: 'https://www.google.com/maps/embed/v1/place?key=AIzaSyDRGTy4ffwK78AJpY3j9A512uPCjny7E48&q='
+        + selector(state, 'street') + ',' + selector(state, 'housenumber') + ',' + selector(state, 'city')
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {}
+}
+
 DeliveryAddressForm = reduxForm({
     form: 'deliveryAddress',
-
     asyncValidate: (values, dispatch, props, field) => {
         if (field === 'zipcode') {
             return Api.getAddressByZipCode(values.zipcode)
@@ -40,28 +54,6 @@ DeliveryAddressForm = reduxForm({
         }
         return Promise.resolve();
     },
-    asyncBlurFields: ['zipcode', 'housenumber']
 })(DeliveryAddressForm);
 
-const selector = formValueSelector('deliveryAddress') // <-- same as form name
-
-function mapStateToProps(state) {
-    return {
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        fillStreetName(streetName) {
-            dispatch(change('deliveryAddress', 'street', streetName));
-        },
-        fillInCityName(cityName) {
-            dispatch(change('deliveryAddress', 'city', cityName));
-        }
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(DeliveryAddressForm);
+export default DeliveryAddressForm;

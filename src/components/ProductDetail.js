@@ -38,7 +38,7 @@ class ProductDetail extends Component {
                         <h4>{price}</h4>
                         <div className="row">
                             <div className="col-md-12">
-                                <RaisedButton fullWidth={true}
+                                <RaisedButton fullWidth={true} secondary={true}
                                               onClick={this.addToCart.bind(this)} label="Add to cart"/>
                             </div>
                         </div>

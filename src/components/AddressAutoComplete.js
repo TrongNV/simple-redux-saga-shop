@@ -7,7 +7,6 @@ import {TextField} from "material-ui";
 const renderTextField = ({input, label, meta: {touched, error}, ...custom}) => {
     return (
         <TextField
-            required
             hintText={label}
             floatingLabelText={label}
             errorText={touched && error}
@@ -26,7 +25,7 @@ class AddressAutoComplete extends Component {
         return (
             <section>
                 <div>
-                    <Field name="zipcode" component={renderTextField} label="Zipcode"/>
+                    <Field name="zipcode" component={renderTextField} label="Zipcode" autoFocus/>
                 </div>
                 <div>
                     <Field name="housenumber" component={renderTextField} label="House Number"/>

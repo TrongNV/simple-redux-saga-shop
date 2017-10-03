@@ -25,9 +25,9 @@ import find from 'lodash/find';
 import axios from 'axios';
 
 const nlAddressApi = axios.create({
-    baseURL: `https://overheid.io/api`,
+    baseURL: `https://api.postcodeapi.nu/v2/`,
     headers: {
-        'ovio-api-key': '167d8d26168613374c0616df4cb1750abcf08cf2d766125c2a3faba2dc7de980'
+        'X-Api-Key': 'FBuMpkwGsk2aPyb6PXtcC68Ytor87yxi4ddLTPWd'
     }
 });
 
@@ -48,38 +48,21 @@ export default {
         });
     },
     getAddressByZipCode(zipcode) {
-        return new Promise( (resolve, reject) => {
-            nlAddressApi.get('bag', {
-                params: {
-                    'filters[postcode]': zipcode
-                }
-            })
-                .then((response) => {
-                    const data = response.data;
-                    const totalItemCount = data.totalItemCount;
-                    if(totalItemCount > 0) {
-                        return resolve(response);
-                    } else {
-                        return reject();
-                    }
-                })
-        })
+        return nlAddressApi.get('addresses', {
+            params: {
+                'postcode': zipcode
+            }
+        });
     },
     getAddressByZipCodeAndNumber({zipcode, number}) {
-        return new Promise((resolve, reject) => {
-            nlAddressApi.get('bag', {
-                params: {
-                    'filters[postcode]': zipcode,
-                    'filters[huisnummer]': number
-                }
-            }).then((response) => {
-                const totalItemCount = parseInt(response.data['totalItemCount'] || 0);
-                if(totalItemCount > 0) {
-                    return  resolve(response);
-                } else {
-                    return reject();
-                }
-            })
-        })
+        return nlAddressApi.get('addresses', {
+            params: {
+                'postcode': zipcode,
+                'number':  number
+            }
+        });
+    },
+    getGeoCodeByAddress(address) {
+        return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBpdwYRO9h74NOLQy6DOHcIyoPzXemVifg`);
     }
 }

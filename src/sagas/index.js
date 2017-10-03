@@ -33,25 +33,12 @@ export function* watchViewProductDetail() {
 function* watchZipCodeInput() {
     while (true) {
         const {meta} = yield take(formActionTypes.BLUR);
-        const {zipcode, housenumber} = yield select((state) => state.form.deliveryAddress.values);
-
         if (meta.field === 'zipcode') {
             try {
+                const {zipcode} = yield select((state) => state.form.deliveryAddress.values);
                 const {data} = yield call(Api.getAddressByZipCode, zipcode);
-                let currentAddress = data._embedded.adres[0];
-                yield put(change('deliveryAddress', 'city', currentAddress.woonplaatsnaam))
-            } catch (e) {
-
-            }
-        }
-
-        if (meta.field === 'housenumber') {
-            try {
-                const {data} = yield call(Api.getAddressByZipCodeAndNumber,
-                    {zipcode: zipcode, number: housenumber}
-                );
-                let currentAddress = data._embedded.adres[0];
-                yield put(change('deliveryAddress', 'street', currentAddress.openbareruimtenaam))
+                let currentAddress = data._embedded.addresses[0];
+                yield put(change('deliveryAddress', 'city', currentAddress.city.label))
             } catch (e) {
 
             }
@@ -59,10 +46,45 @@ function* watchZipCodeInput() {
     }
 }
 
+function* watchHouseNumberInput() {
+    while (true) {
+        const {meta} = yield take(formActionTypes.BLUR);
+        if (meta.field === 'housenumber') {
+            try {
+                const {zipcode, housenumber} = yield select((state) => state.form.deliveryAddress.values);
+                const {data} = yield call(Api.getAddressByZipCodeAndNumber, {zipcode: zipcode, number: housenumber});
+                let currentAddress = data._embedded.addresses[0];
+                yield put(change('deliveryAddress', 'street', currentAddress.street))
+            } catch (e) {
+
+            }
+        }
+    }
+}
+
+function* watchCompleteAddressInput() {
+    while (true) {
+        yield take(formActionTypes.CHANGE);
+        const {zipcode, housenumber, street, city} = yield select((state) => state.form.deliveryAddress.values);
+        if (street && housenumber && city) {
+            try {
+                const {data} = yield call(Api.getGeoCodeByAddress, `${street},${housenumber},${city}`);
+                yield put(change('deliveryAddress', 'lat', data.results[0].geometry.location.lat));
+                yield put(change('deliveryAddress', 'lng', data.results[0].geometry.location.lng));
+            } catch (e) {
+
+            }
+        }
+    }
+}
+
+
 export default function* rootSaga() {
     yield fork(getAllProducts);
     yield fork(watchProductAddedToCart);
     yield fork(watchProductRemovedFromCart);
     yield fork(watchViewProductDetail);
     yield fork(watchZipCodeInput);
+    yield fork(watchHouseNumberInput);
+    yield fork(watchCompleteAddressInput);
 }
