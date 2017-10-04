@@ -10,7 +10,7 @@ const CartCounter = ({cart, openCartListDrawer}) => {
             <FlatButton onClick={openCartListDrawer}>
                 <h4>
                     <i className="glyphicon glyphicon-shopping-cart">&nbsp;</i>
-                    <span className="badge">{cart.products.length}</span>
+                    <span className="badge" style={{background: 'rgb(255, 64, 129)'}}>{cart.products.length}</span>
                 </h4>
             </FlatButton>
         </div>

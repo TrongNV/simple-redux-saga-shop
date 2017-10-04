@@ -1,5 +1,8 @@
+import {products} from '../api';
+import {sample} from "lodash";
+
 const defaultState = {
-    products: [],
+    products: [sample(products)]
 };
 
 export default function shop(state = defaultState, action) {

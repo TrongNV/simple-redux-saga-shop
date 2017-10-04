@@ -15,6 +15,7 @@ const DeliveryOverview = ({handleSubmit, products}) => {
             <form>
                 <div className="col-md-4">
                     <h3>Delivery address</h3>
+                    <div className="alert alert-warning"><small>Mock Address Data: Splinterlaan 30, 2352SJ Leiderdorp</small></div>
                     <DeliveryAddressForm onSubmit={showResults}/>
                 </div>
                 <div className="col-md-8">
