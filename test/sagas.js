@@ -2,7 +2,7 @@ import test from 'tape';
 
 import { put, call } from '../../../src/effects'
 import { delay } from '../../../src'
-import { incrementAsync } from '../src/sagas'
+import { incrementAsync } from '../src/sagas/rootSaga'
 
 test('incrementAsync Saga test', (t) => {
   const generator = incrementAsync()

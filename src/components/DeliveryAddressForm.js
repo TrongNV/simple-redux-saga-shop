@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AddressAutoComplete from "./AddressAutoComplete";
-import {formValueSelector, reduxForm} from "redux-form";
+import {formValueSelector, reduxForm, change} from "redux-form";
 import {connect} from "react-redux";
 import {RaisedButton} from "material-ui";
 import Api from '../api';
@@ -42,12 +42,18 @@ DeliveryAddressForm = reduxForm({
     asyncValidate: (values, dispatch, props, field) => {
         if (field === 'zipcode') {
             return Api.getAddressByZipCode(values.zipcode)
+                .then(({data}) => {
+                    dispatch(change('deliveryAddress', 'address', data))
+                })
                 .catch((error) => {
                     throw {zipcode: 'Incorrect zipcode'}
                 })
         }
         else if (values.zipcode && field === 'housenumber') {
             return Api.getAddressByZipCodeAndNumber({zipcode: values.zipcode, number: values.housenumber})
+                .then(({data}) => {
+                    dispatch(change('deliveryAddress', 'address', data))
+                })
                 .catch((error) => {
                     throw {housenumber: 'Housenumber unknown for the zipcode'}
                 })

@@ -8,7 +8,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import shop from './reducers/shop'
 import cart from "./reducers/cart";
-import rootSaga from './sagas'
+import rootSaga from './sagas/rootSaga'
 import {MuiThemeProvider} from "material-ui";
 import {Provider} from "react-redux";
 import App from "./App";
