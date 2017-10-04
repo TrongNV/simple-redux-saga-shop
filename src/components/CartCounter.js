@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FlatButton, IconButton} from "material-ui";
 import {connect} from "react-redux";
-import * as _ from "lodash";
+import {sortBy} from "lodash";
+import {openCartListDrawer} from "../actionCreators";
 
 const CartCounter = ({cart, openCartListDrawer}) => {
     return (
@@ -22,9 +23,9 @@ CartCounter.defaultProps = {};
 
 function mapStateToProps(state) {
     return {
-        products: _.sortBy(state.shop.products, ['id']),
+        products: sortBy(state.shop.products, ['id']),
         cart: {
-            products: _.sortBy(state.cart.products, ['id'])
+            products: sortBy(state.cart.products, ['id'])
         }
     }
 }
@@ -32,7 +33,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         openCartListDrawer() {
-            return dispatch({type: 'OPEN_CART_LIST_DRAWER'});
+            return dispatch(openCartListDrawer());
         }
     }
 }

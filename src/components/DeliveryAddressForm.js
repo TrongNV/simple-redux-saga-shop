@@ -4,7 +4,8 @@ import AddressAutoComplete from "./AddressAutoComplete";
 import {formValueSelector, reduxForm, change} from "redux-form";
 import {connect} from "react-redux";
 import {RaisedButton} from "material-ui";
-import Api from '../api';
+import Api from '../MockApi';
+import {fillInAddress, fillInCity, fillInStreet} from "../actionCreators";
 
 function DeliveryAddressForm({lat, lng, mapSrc}) {
     return (
@@ -43,7 +44,9 @@ DeliveryAddressForm = reduxForm({
         if (field === 'zipcode') {
             return Api.getAddressByZipCode(values.zipcode)
                 .then(({data}) => {
-                    dispatch(change('deliveryAddress', 'address', data))
+                    dispatch(fillInAddress(data));
+                    const currentAddress = data._embedded.addresses[0];
+                    dispatch(fillInCity(currentAddress.city.label));
                 })
                 .catch((error) => {
                     throw {zipcode: 'Incorrect zipcode'}
@@ -52,7 +55,9 @@ DeliveryAddressForm = reduxForm({
         else if (values.zipcode && field === 'housenumber') {
             return Api.getAddressByZipCodeAndNumber({zipcode: values.zipcode, number: values.housenumber})
                 .then(({data}) => {
-                    dispatch(change('deliveryAddress', 'address', data))
+                    dispatch(fillInAddress(data));
+                    const currentAddress = data._embedded.addresses[0];
+                    dispatch(fillInStreet(currentAddress.street));
                 })
                 .catch((error) => {
                     throw {housenumber: 'Housenumber unknown for the zipcode'}

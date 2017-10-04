@@ -1,13 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-    AppBar, Avatar, Divider, Drawer, FlatButton, IconButton, List, ListItem, MenuItem, RaisedButton,
-    Subheader
-} from "material-ui";
+import {AppBar, Avatar, Divider, Drawer, IconButton, List, ListItem, RaisedButton} from "material-ui";
 import {connect} from "react-redux";
 import {uniqueId} from "lodash";
-import {Button} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import {closeCartListDrawer} from "../actionCreators";
 
 const CheckoutButton = ({products, closeCartListDrawer}) => {
     if(products.length) {
@@ -83,7 +79,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         closeCartListDrawer() {
-            return dispatch({type: 'CLOSE_CART_LIST_DRAWER'});
+            return dispatch(closeCartListDrawer());
         }
     }
 }
