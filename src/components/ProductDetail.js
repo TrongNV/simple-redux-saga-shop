@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {Component} from 'react';
 import {bindActionCreators} from "redux";
 import {RaisedButton} from "material-ui";
+import ShopHOC from "./ShopHOC";
 
 class ProductDetail extends Component {
     constructor(props) {
@@ -52,12 +53,5 @@ class ProductDetail extends Component {
 ProductDetail.propTypes = {};
 ProductDetail.defaultProps = {};
 
-function mapStateToProps(state, ownProps) {
-    return {
-        selectedProduct: state.shop.selectedProduct
-    }
-}
 
-export default connect(
-    mapStateToProps
-)(ProductDetail)
+export default ShopHOC(ProductDetail)

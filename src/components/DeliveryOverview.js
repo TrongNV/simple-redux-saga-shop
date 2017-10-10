@@ -4,6 +4,7 @@ import DeliveryAddressForm from "./DeliveryAddressForm";
 import DeliverySummary from "./DeliverySummary";
 import {connect} from "react-redux";
 import {RaisedButton} from "material-ui";
+import ShopHOC from "./ShopHOC";
 
 const showResults = (event) => {
     debugger
@@ -31,12 +32,4 @@ const DeliveryOverview = ({handleSubmit, products}) => {
 DeliveryOverview.propTypes = {};
 DeliveryOverview.defaultProps = {};
 
-function mapStateToProps(state) {
-    return {
-        products: state.cart.products,
-    }
-}
-
-export default connect(
-    mapStateToProps
-)(DeliveryOverview)
+export default ShopHOC(DeliveryOverview)

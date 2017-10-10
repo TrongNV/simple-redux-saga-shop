@@ -5,15 +5,16 @@ import {uniqueId} from "lodash";
 import CartItem from "./CartItem";
 import {Divider, RaisedButton} from "material-ui";
 import {Link} from "react-router-dom";
+import ShopHOC from "./ShopHOC";
 
-const CartDetail = ({products, totalPrice}) => {
+const CartDetail = ({cartProducts, totalPrice}) => {
 
     return (
         <div>
             <h2>Shopping Cart</h2>
             <Divider/>
             <br/>
-            {products.map((product) => {
+            {cartProducts.map((product) => {
                 return (
                     <CartItem key={uniqueId()} {...product}/>
                 )
@@ -47,16 +48,4 @@ const CartDetail = ({products, totalPrice}) => {
 CartDetail.propTypes = {};
 CartDetail.defaultProps = {};
 
-function mapStateToProps(state) {
-    return {
-        products: state.cart.products,
-        cartListDrawerOpened: state.cart.cartListDrawerOpened,
-        totalPrice: state.cart.products.reduce((totalPrice, {price}) => {
-            return totalPrice + price;
-        }, 0)
-    }
-}
-
-export default connect(
-    mapStateToProps
-)(CartDetail)
+export default ShopHOC(CartDetail)

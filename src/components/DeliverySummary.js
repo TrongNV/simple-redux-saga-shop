@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import {uniqueId} from "lodash";
 import CartItem from "./CartItem";
 import {connect} from "react-redux";
+import ShopHOC from "./ShopHOC";
 
-const DeliverySummary = ({products, totalPrice}) => {
+const DeliverySummary = ({cartProducts, totalPrice}) => {
     return (
         <div>
-            {products.map((product) => {
+            {cartProducts.map((product) => {
                 return (
                     <CartItem key={uniqueId()} {...product}/>
                 )
@@ -20,16 +21,6 @@ const DeliverySummary = ({products, totalPrice}) => {
 DeliverySummary.propTypes = {};
 DeliverySummary.defaultProps = {};
 
-function mapStateToProps(state) {
-    return {
-        products: state.cart.products,
-        totalPrice: state.cart.products.reduce((totalPrice, {price}) => {
-            return totalPrice + price;
-        }, 0)
-    }
-}
 
-export default connect(
-    mapStateToProps
-)(DeliverySummary)
+export default ShopHOC(DeliverySummary)
 

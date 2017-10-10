@@ -4,9 +4,10 @@ import {connect} from "react-redux";
 import {uniqueId} from "lodash";
 import {Link} from "react-router-dom";
 import {closeCartListDrawer} from "../actionCreators";
+import ShopHOC from "./ShopHOC";
 
-const CheckoutButton = ({products, closeCartListDrawer}) => {
-    if(products.length) {
+const CheckoutButton = ({cartProducts, closeCartListDrawer}) => {
+    if(cartProducts.length) {
         return (
             <div style={{position: 'absolute', bottom: "20px", width: "100%"}}>
                 <Divider/>
@@ -24,13 +25,13 @@ const CheckoutButton = ({products, closeCartListDrawer}) => {
     }
 }
 
-const CartListDrawer = ({products, open = false, closeCartListDrawer}) => {
+const CartListDrawer = ({cartProducts, cartListDrawerOpened = false, closeCartListDrawer}) => {
     return (
         <div>
             <Drawer
                 width={450}
                 docked={false}
-                open={open}
+                open={cartListDrawerOpened}
                 openSecondary={true}
             >
                 <AppBar title="Your cart"
@@ -38,7 +39,7 @@ const CartListDrawer = ({products, open = false, closeCartListDrawer}) => {
                         iconElementRight={<IconButton iconClassName="material-icons"
                                                       onClick={closeCartListDrawer}>close</IconButton>}/>
                 <List>
-                    {products.map(({image, title, description, id, price}) => {
+                    {cartProducts.map(({image, title, description, id, price}) => {
                         return (
                             <div key={uniqueId()}>
                                 <ListItem
@@ -58,7 +59,7 @@ const CartListDrawer = ({products, open = false, closeCartListDrawer}) => {
                             </div>
                         )
                     })}
-                    <CheckoutButton products={products} closeCartListDrawer={closeCartListDrawer} />
+                    <CheckoutButton cartProducts={cartProducts} closeCartListDrawer={closeCartListDrawer} />
                 </List>
 
             </Drawer>
@@ -69,22 +70,4 @@ const CartListDrawer = ({products, open = false, closeCartListDrawer}) => {
 CartListDrawer.propTypes = {};
 CartListDrawer.defaultProps = {};
 
-function mapStateToProps(state) {
-    return {
-        products: state.cart.products,
-        open: state.cart.cartListDrawerOpened
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        closeCartListDrawer() {
-            return dispatch(closeCartListDrawer());
-        }
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CartListDrawer);
+export default ShopHOC(CartListDrawer);
