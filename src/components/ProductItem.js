@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
-const ProductItem = (props) => {
-    const {product: {id, image, description, price, title}} = props;
+const ProductItem = ({id, image, description, price, title}) => {
     return (
         <div className="col-md-3 col-sm-6 col-xs-6">
             <Link to={"products/" + id}>
@@ -18,7 +17,13 @@ const ProductItem = (props) => {
     );
 };
 
-ProductItem.propTypes = {};
+ProductItem.propTypes = {
+    id: PropTypes.number,
+    image: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+};
 ProductItem.defaultProps = {};
 
 export default ProductItem;

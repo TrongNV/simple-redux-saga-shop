@@ -19,7 +19,13 @@ const CartItem = ({id, image, title, description, price}) => {
     );
 };
 
-CartItem.propTypes = {};
+CartItem.propTypes = {
+    id: PropTypes.number,
+    image: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+};
 CartItem.defaultProps = {};
 
 export default CartItem;

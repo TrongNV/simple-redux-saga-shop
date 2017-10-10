@@ -5,13 +5,13 @@ import {connect} from "react-redux";
 import {sortBy} from "lodash";
 import {openCartListDrawer} from "../actionCreators";
 
-const CartCounter = ({cart, openCartListDrawer}) => {
+const CartCounter = ({productsCount, openCartListDrawer}) => {
     return (
         <div>
             <FlatButton onClick={openCartListDrawer}>
                 <h4>
                     <i className="glyphicon glyphicon-shopping-cart">&nbsp;</i>
-                    <span className="badge" style={{background: 'rgb(255, 64, 129)'}}>{cart.products.length}</span>
+                    <span className="badge" style={{background: 'rgb(255, 64, 129)'}}>{productsCount}</span>
                 </h4>
             </FlatButton>
         </div>
@@ -24,9 +24,7 @@ CartCounter.defaultProps = {};
 function mapStateToProps(state) {
     return {
         products: sortBy(state.shop.products, ['id']),
-        cart: {
-            products: sortBy(state.cart.products, ['id'])
-        }
+        productsCount: state.cart.products.length
     }
 }
 

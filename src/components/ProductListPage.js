@@ -9,7 +9,7 @@ const ProductListPage = ({products = []}) => {
         <div className="row">
             {products.map((product) => {
                 return (
-                    <ProductItem key={product.id} product={product}/>
+                    <ProductItem key={product.id} {...product} />
                 )
             })}
         </div>
