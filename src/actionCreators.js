@@ -1,4 +1,7 @@
-import {CLOSE_CART_LIST_DRAWER, OPEN_CART_LIST_DRAWER, SET_PRODUCTS, SET_SELECTED_PRODUCT} from "./actionTypes";
+import {
+    ADD_PRODUCT_TO_CART, CLOSE_CART_LIST_DRAWER, OPEN_CART_LIST_DRAWER, SET_PRODUCTS,
+    SET_SELECTED_PRODUCT, SET_VIEW_PRODUCT_ID
+} from "./actionTypes";
 import {change} from 'redux-form';
 
 export const initShopProducts = (products) => {
@@ -7,6 +10,14 @@ export const initShopProducts = (products) => {
 
 export const selectProductToView = (selectedProduct) => {
     return {type: SET_SELECTED_PRODUCT, selectedProduct}
+};
+
+export const selectProductIdToView = (productId) => {
+    return {type: SET_VIEW_PRODUCT_ID, productId};
+};
+
+export const addProductToCart =(product) => {
+    return {type: ADD_PRODUCT_TO_CART, product};
 };
 
 export const openCartListDrawer = () => {

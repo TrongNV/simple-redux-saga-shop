@@ -6,6 +6,8 @@ import {Component} from 'react';
 import {bindActionCreators} from "redux";
 import {RaisedButton} from "material-ui";
 import ShopHOC from "./ShopHOC";
+import {addProductToCart, openCartListDrawer, selectProductIdToView} from "../actionCreators";
+import {uniqueId} from "lodash";
 
 class ProductDetail extends Component {
     constructor(props) {
@@ -14,12 +16,13 @@ class ProductDetail extends Component {
 
     componentWillMount() {
         const productId = this.props.match.params.id;
-        this.props.dispatch({type: 'SET_VIEW_PRODUCT_ID', productId})
+        this.props.dispatch(selectProductIdToView(productId))
     }
 
     addToCart() {
-        const product = this.props.selectedProduct;
-        this.props.dispatch({type: 'ADD_PRODUCT_TO_CART', product});
+        let product = this.props.selectedProduct;
+        this.props.dispatch(addProductToCart(product));
+        this.props.dispatch(openCartListDrawer());
     }
 
     render() {

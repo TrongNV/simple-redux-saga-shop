@@ -37,7 +37,7 @@ const CartDetail = ({cartProducts, totalPrice}) => {
             <div className="row" style={{marginTop: 50}}>
                 <div className="col-md-4 col-md-offset-4">
                     <Link to="/checkout">
-                        <RaisedButton label="Order products" secondary={true} fullWidth={true}/>
+                        <RaisedButton label="Checkout" secondary={true} fullWidth={true}/>
                     </Link>
                 </div>
             </div>

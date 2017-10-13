@@ -22,7 +22,10 @@ const DeliveryOverview = ({handleSubmit, products}) => {
                 <div className="col-md-8">
                     <h3>Summary</h3>
                     <DeliverySummary products={products}/>
-                    <div className="text-right"><RaisedButton label="End this example" secondary={true} /></div>
+                    <hr/>
+                    <p>
+                        End of Simple React Redux Saga Shop example, check src code on <a href="https://github.com/tlimpanont/simple-redux-saga-shop">Github</a>
+                    </p>
                 </div>
             </form>
         </div>

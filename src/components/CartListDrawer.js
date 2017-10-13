@@ -13,7 +13,7 @@ const CheckoutButton = ({cartProducts, closeCartListDrawer}) => {
                 <Divider/>
                 <br/>
                 <Link to="/cart-detail" onClick={closeCartListDrawer}>
-                    <RaisedButton  fullWidth={true} label="Checkout" secondary={true} />
+                    <RaisedButton  fullWidth={true} label="View cart" secondary={true} />
                 </Link>
             </div>
 
@@ -39,9 +39,9 @@ const CartListDrawer = ({cartProducts, cartListDrawerOpened = false, closeCartLi
                         iconElementRight={<IconButton iconClassName="material-icons"
                                                       onClick={closeCartListDrawer}>close</IconButton>}/>
                 <List>
-                    {cartProducts.map(({image, title, description, id, price}) => {
+                    {cartProducts.map(({image, title, description, id, price, animated}) => {
                         return (
-                            <div key={uniqueId()}>
+                            <div key={uniqueId()} className={(animated) ? 'animated slideInRight fadeIn' : ''}>
                                 <ListItem
                                     leftAvatar={<Avatar src={image}/>}
                                     primaryText={title}
