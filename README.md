@@ -7,5 +7,5 @@ http://slides.com/tlimpanont/simple-shop-with-react-js-and-redux-saga/fullscreen
 
 **Live Demo**
 
-https://www.theuy.nl:5000
+http://theuy.nl:5000
 
